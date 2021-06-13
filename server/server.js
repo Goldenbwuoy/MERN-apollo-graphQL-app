@@ -1,17 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
+const connectDb = require("./db");
+const models = require("./models/index");
 
 const PORT = process.env.PORT || 4000;
 
-let notes = [
-	{ id: "1", content: "This is a note", author: "Adam Scott" },
-	{ id: "2", content: "This is another note", author: "Harlow Everly" },
-	{
-		id: "3",
-		content: "Oh hey look, another note!",
-		author: "Riley Harrison",
-	},
-];
+connectDb();
 
 const typeDefs = gql`
 	type Note {
@@ -34,20 +29,19 @@ const typeDefs = gql`
 const resolvers = {
 	Query: {
 		hello: () => "Hello World!!",
-		notes: () => notes,
-		note: (parent, args) => {
-			return notes.find((note) => note.id === args.id);
+		notes: async () => {
+			return await models.Note.find();
+		},
+		note: async (parent, args) => {
+			return await models.Note.findById(args.id);
 		},
 	},
 	Mutation: {
-		newNote: (parent, args) => {
-			let noteValue = {
-				id: String(notes.length + 1),
+		newNote: async (parent, args) => {
+			return await models.Note.create({
 				content: args.content,
-				author: "Golden T",
-			};
-			notes.push(noteValue);
-			return noteValue;
+				author: "Golden Tendekai",
+			});
 		},
 	},
 };
