@@ -1,27 +1,64 @@
 require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const {
 	AuthenticationError,
 	ForbiddenError,
 } = require("apollo-server-express");
 
 module.exports = {
-	newNote: async (parent, args, { models }) => {
+	newNote: async (parent, args, { models, user }) => {
+		if (!user) {
+			throw new AuthenticationError(
+				"You must be signed in to create a note"
+			);
+		}
 		return await models.Note.create({
 			content: args.content,
-			author: "Golden Tendekai",
+			// reference the author's mongo id
+			author: mongoose.Types.ObjectId(user.id),
 		});
 	},
-	deleteNote: async (parent, { id }, { models }) => {
+	deleteNote: async (parent, { id }, { models, user }) => {
+		// throw an authentication error if not a user
+		if (!user) {
+			throw new AuthenticationError(
+				"You must be signed in to delete a note"
+			);
+		}
+
+		// find the note
+		const note = await models.Note.findById(id);
+		// throw a forbidden error if note owner and current user don't match
+		if (note && String(note.author) !== user.id) {
+			throw new ForbiddenError(
+				"You don't have permission to delete the note"
+			);
+		}
 		try {
-			await models.Note.findOneAndRemove({ _id: id });
+			await note.remove();
 			return true;
 		} catch (err) {
 			return false;
 		}
 	},
-	updateNote: async (parent, { id, content }, { models }) => {
+	updateNote: async (parent, { id, content }, { models, user }) => {
+		// throw an authentication error if not a user
+		if (!user) {
+			throw new AuthenticationError(
+				"You must be signed in to update a note"
+			);
+		}
+
+		// find the note
+		const note = await models.Note.findById(id);
+		// throw a forbidden error if note owner and current user don't match
+		if (note && String(note.author) !== user.id) {
+			throw new ForbiddenError(
+				"You don't have permission to update the note"
+			);
+		}
 		return await models.Note.findOneAndUpdate(
 			{ _id: id },
 			{ $set: { content } },
