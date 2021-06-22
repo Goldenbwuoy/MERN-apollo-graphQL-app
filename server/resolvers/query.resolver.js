@@ -17,4 +17,37 @@ module.exports = {
 		// find a user given the current user context
 		return await models.User.findById(user.id);
 	},
+	noteFeed: async (parent, { cursor }, { models }) => {
+		//set the limit
+		const limit = 5;
+		// set the default hasnextPage to false
+		let hasNextPage = false;
+		// if no cursor is passed the default query will be empty
+		// this will pull the newest notes from the db
+		let cursorQuery = {};
+
+		if (cursor) {
+			cursorQuery = { _id: { $lt: cursor } };
+		}
+
+		let notes = await models.Note.find(cursorQuery)
+			.sort({ _id: -1 })
+			.limit(limit + 1);
+
+		// if the number of notes we find exceeds our limit
+		// set hasNextPage to true and trim the notes to the limit
+		if (notes.length > limit) {
+			hasNextPage = true;
+			notes = notes.slice(0, -1);
+		}
+
+		// the new cursor will be the Mongo object ID of the last item in the feed array
+		const newCursor = notes[notes.length - 1]._id;
+
+		return {
+			notes,
+			cursor: newCursor,
+			hasNextPage,
+		};
+	},
 };
