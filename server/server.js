@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
+const helmet = require("helmet");
 
 const typeDefs = require("./schema/schema");
 const resolvers = require("./resolvers/");
@@ -13,6 +15,10 @@ const PORT = process.env.PORT || 4000;
 connectDb();
 
 const app = express();
+
+// add middleware
+app.use(helmet());
+app.use(cors());
 
 const getUser = (token) => {
 	if (token) {
