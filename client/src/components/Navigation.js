@@ -12,7 +12,7 @@ const Navigation = () => {
 					<Link to="/mynotes">My Notes</Link>
 				</li>
 				<li>
-					<Link to="/faourites">Favourites</Link>
+					<Link to="/favourites">Favourites</Link>
 				</li>
 			</ul>
 		</nav>
