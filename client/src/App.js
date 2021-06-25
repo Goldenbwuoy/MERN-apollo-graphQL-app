@@ -1,11 +1,8 @@
 import "./App.css";
+import Pages from "./pages";
 
 function App() {
-	return (
-		<div className="App">
-			<h2>Welcome to Notedly</h2>
-		</div>
-	);
+	return <Pages />;
 }
 
 export default App;
