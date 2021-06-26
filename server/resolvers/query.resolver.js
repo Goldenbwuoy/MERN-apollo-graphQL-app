@@ -19,7 +19,7 @@ module.exports = {
 	},
 	noteFeed: async (parent, { cursor }, { models }) => {
 		//set the limit
-		const limit = 5;
+		const limit = 10;
 		// set the default hasnextPage to false
 		let hasNextPage = false;
 		// if no cursor is passed the default query will be empty
