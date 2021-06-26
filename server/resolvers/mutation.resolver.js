@@ -65,6 +65,48 @@ module.exports = {
 			{ new: true }
 		);
 	},
+	toggleFavourite: async (parent, { id }, { models, user }) => {
+		// throw an authentication error if not a user
+		if (!user) {
+			throw new AuthenticationError();
+		}
+
+		// check if the user has already favourited the note
+		let noteCheck = await models.Note.findById(id);
+		const hasUser = noteCheck.favouriteBy.indexOf(user.id);
+
+		// if the user exists in the list
+		// pull then from the list and reduce the favourites by one
+		if (hasUser >= 0) {
+			return await models.Note.findByIdAndUpdate(
+				id,
+				{
+					$pull: {
+						favouriteBy: mongoose.Types.ObjectId(user.id),
+					},
+					$inc: {
+						favouriteCount: -1,
+					},
+				},
+				{ new: true }
+			);
+		} else {
+			// is the user doesn't exist in the list
+			//add them to the list and increment the favouriteCount by one
+			return await models.Note.findByIdAndUpdate(
+				id,
+				{
+					$push: {
+						favouriteBy: mongoose.Types.ObjectId(user.id),
+					},
+					$inc: {
+						favouriteCount: 1,
+					},
+				},
+				{ new: true }
+			);
+		}
+	},
 	signUp: async (parent, { username, email, password }, { models }) => {
 		email = email.trim().toLowerCase();
 		const hashed = await bcrypt.hash(password, 10);

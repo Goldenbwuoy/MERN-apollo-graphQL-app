@@ -11,6 +11,16 @@ const NoteSchema = mongoose.Schema(
 			ref: "User",
 			required: true,
 		},
+		favouriteCount: {
+			type: Number,
+			default: 0,
+		},
+		favouriteBy: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "User",
+			},
+		],
 	},
 	{ timestamps: true }
 );
