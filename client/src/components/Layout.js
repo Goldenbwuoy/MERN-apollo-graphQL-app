@@ -22,7 +22,7 @@ const Main = styled.main`
 	position: fixed;
 	height: calc(100% - 185px);
 	width: 100%;
-	padding: 1em;
+	padding: 1em 3em;
 	overflow-y: scroll;
 	/* apply media query style to screens above 700px*/
 	@media (min-width: 700px) {
