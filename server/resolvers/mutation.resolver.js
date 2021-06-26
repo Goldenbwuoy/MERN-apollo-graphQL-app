@@ -7,6 +7,8 @@ const {
 	ForbiddenError,
 } = require("apollo-server-express");
 
+const gravatar = require("../util/gravatar");
+
 module.exports = {
 	newNote: async (parent, args, { models, user }) => {
 		if (!user) {
@@ -110,10 +112,13 @@ module.exports = {
 	signUp: async (parent, { username, email, password }, { models }) => {
 		email = email.trim().toLowerCase();
 		const hashed = await bcrypt.hash(password, 10);
+		//create a gravatar url
+		const avatar = gravatar(email);
 		try {
 			const user = await models.User.create({
 				username,
 				email,
+				avatar,
 				password: hashed,
 			});
 			return jwt.sign({ id: user._id }, process.env.JWT_SECRET);
