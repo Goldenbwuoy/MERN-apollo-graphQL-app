@@ -29,7 +29,7 @@ const Form = styled.form`
 	}
 `;
 
-const SignUp = () => {
+const SignUp = ({ history }) => {
 	const [values, setValues] = useState();
 
 	// update the state when a user types in the form
@@ -47,7 +47,10 @@ const SignUp = () => {
 	// add the mutation hook
 	const [signUp, { loading, error }] = useMutation(SIGNUP_USER, {
 		onCompleted: (data) => {
-			console.log(data.signUp);
+			//store the JWT in localStorage
+			localStorage.setItem("token", data.signUp);
+			// redirect the user to the homepage
+			history.push("/");
 		},
 	});
 	return (
