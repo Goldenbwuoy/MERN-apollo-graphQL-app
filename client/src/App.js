@@ -2,6 +2,7 @@ import {
 	ApolloClient,
 	ApolloProvider,
 	createHttpLink,
+	gql,
 	InMemoryCache,
 } from "@apollo/client";
 import Pages from "./pages";
@@ -29,6 +30,31 @@ const client = new ApolloClient({
 	cache,
 	resolvers: {},
 	connectToDevTools: true,
+});
+
+// check for a local token
+const data = {
+	isLoggedIn: !!localStorage.getItem("token"),
+};
+
+const IS_LOGGED_IN = gql`
+	query WriteStatus {
+		status {
+			isLoggedIn
+		}
+		someValue {
+			value
+		}
+	}
+`;
+
+// write the cache data on initial load
+client.writeQuery({
+	query: IS_LOGGED_IN,
+	data: {
+		status: data,
+		someValue: { value: "Sone other value" },
+	},
 });
 
 function App() {

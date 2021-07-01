@@ -35,7 +35,6 @@ const Note = ({ note }) => {
 				</MetaInfo>
 				<MetaInfo>
 					<em>by</em> {note.author.username} <br />
-					{console.log(note.createdAt)}
 					{format(new Date(note.createdAt), "MMM d yyyy")}
 				</MetaInfo>
 				<UserActions>

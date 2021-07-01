@@ -1,6 +1,8 @@
 import React from "react";
+import { gql, useQuery, useApolloClient } from "@apollo/client";
 import styled from "styled-components";
 import logo from "../img/logo.svg";
+import { Link } from "react-router-dom";
 
 const HeaderBar = styled.header`
 	width: 100%;
@@ -20,11 +22,43 @@ const LogoText = styled.h1`
 	display: inline;
 `;
 
+const IS_LOGGED_IN = gql`
+	query ReadStatus {
+		status {
+			isLoggedIn
+		}
+		someValue {
+			value
+		}
+	}
+`;
+
+const UserState = styled.div`
+	margin-left: auto;
+`;
+
 const Header = () => {
+	const client = useApolloClient();
+
+	const { status, someValue } = client.readQuery({ query: IS_LOGGED_IN });
+
+	console.log(someValue);
+
 	return (
 		<HeaderBar>
 			<img src={logo} alt="Notedly Logo" height={40} />
 			<LogoText>Notedly</LogoText>
+			{/* If logged in display logout link, else display sign-in options */}
+			<UserState>
+				{status.isLoggedIn ? (
+					<p>Log Out</p>
+				) : (
+					<p>
+						<Link to="/signup">Sign In</Link>
+						<Link to="/signup">Sign Up</Link>
+					</p>
+				)}
+			</UserState>
 		</HeaderBar>
 	);
 };

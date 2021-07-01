@@ -10,6 +10,14 @@ const SIGNUP_USER = gql`
 	}
 `;
 
+const IS_LOGGED_IN = gql`
+	query WriteStatus {
+		status {
+			isLoggedIn
+		}
+	}
+`;
+
 const Wrapper = styled.div`
 	border: 1px solid #f5f4f0;
 	max-width: 500px;
@@ -32,6 +40,9 @@ const Form = styled.form`
 const SignUp = ({ history }) => {
 	const [values, setValues] = useState();
 
+	//Apollo client
+	const client = useApolloClient();
+
 	// update the state when a user types in the form
 	const onChange = (event) => {
 		setValues({
@@ -49,6 +60,14 @@ const SignUp = ({ history }) => {
 		onCompleted: (data) => {
 			//store the JWT in localStorage
 			localStorage.setItem("token", data.signUp);
+
+			// update the local cache
+			client.writeQuery({
+				query: IS_LOGGED_IN,
+				data: {
+					status: { isLoggedIn: true },
+				},
+			});
 			// redirect the user to the homepage
 			history.push("/");
 		},
