@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
+import NoteFeed from "../components/NoteFeed";
 
 import Button from "../components/Button";
 
@@ -17,6 +18,7 @@ const GET_NOTES = gql`
 				author {
 					id
 					username
+					avatar
 				}
 			}
 		}
@@ -31,13 +33,7 @@ const Home = () => {
 
 	if (error) return <p>Error!!</p>;
 
-	return (
-		<div>
-			{data.noteFeed.notes.map((note) => (
-				<div key={note.id}>{note.author.username}</div>
-			))}
-		</div>
-	);
+	return <NoteFeed notes={data.noteFeed.notes} />;
 };
 
 export default Home;
