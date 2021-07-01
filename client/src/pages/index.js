@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./home";
 import MyNotes from "./mynotes";
 import Favourites from "./favourites";
+import NotePage from "./note";
 import Layout from "../components/Layout";
 
 const Pages = () => {
@@ -14,6 +15,7 @@ const Pages = () => {
 				<Route exact path="/" component={Home} />
 				<Route path="/mynotes" component={MyNotes} />
 				<Route path="/favourites" component={Favourites} />
+				<Route path="/note/:id" component={NotePage} />
 			</Layout>
 		</Router>
 	);
