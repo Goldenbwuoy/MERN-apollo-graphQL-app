@@ -29,9 +29,6 @@ const IS_LOGGED_IN = gql`
 		status {
 			isLoggedIn
 		}
-		someValue {
-			value
-		}
 	}
 `;
 
@@ -42,9 +39,7 @@ const UserState = styled.div`
 const Header = ({ history }) => {
 	const client = useApolloClient();
 
-	const { status, someValue } = client.readQuery({ query: IS_LOGGED_IN });
-
-	console.log(someValue);
+	const { status } = client.readQuery({ query: IS_LOGGED_IN });
 
 	return (
 		<HeaderBar>
@@ -74,7 +69,7 @@ const Header = ({ history }) => {
 					</ButtonAsLink>
 				) : (
 					<p>
-						<Link to="/signup">Sign In</Link>
+						<Link to="/signin">Sign In</Link>
 						<Link to="/signup">Sign Up</Link>
 					</p>
 				)}

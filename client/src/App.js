@@ -42,9 +42,6 @@ const IS_LOGGED_IN = gql`
 		status {
 			isLoggedIn
 		}
-		someValue {
-			value
-		}
 	}
 `;
 
@@ -53,7 +50,6 @@ client.writeQuery({
 	query: IS_LOGGED_IN,
 	data: {
 		status: data,
-		someValue: { value: "Sone other value" },
 	},
 });
 
