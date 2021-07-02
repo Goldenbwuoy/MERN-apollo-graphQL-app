@@ -57,6 +57,15 @@ client.writeQuery({
 	},
 });
 
+client.onResetStore(() =>
+	client.writeQuery({
+		query: IS_LOGGED_IN,
+		data: {
+			status: data,
+		},
+	})
+);
+
 function App() {
 	console.log(process.env.REACT_APP_API_URI);
 	return (

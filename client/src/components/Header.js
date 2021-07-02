@@ -2,11 +2,13 @@ import React from "react";
 import { gql, useQuery, useApolloClient } from "@apollo/client";
 import styled from "styled-components";
 import logo from "../img/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+
+import ButtonAsLink from "./ButtonAsLink";
 
 const HeaderBar = styled.header`
 	width: 100%;
-	padding: 0.5em 1em;
+	padding: 0.5em 0;
 	display: flex;
 	height: 64px;
 	position: fixed;
@@ -37,7 +39,7 @@ const UserState = styled.div`
 	margin-left: auto;
 `;
 
-const Header = () => {
+const Header = ({ history }) => {
 	const client = useApolloClient();
 
 	const { status, someValue } = client.readQuery({ query: IS_LOGGED_IN });
@@ -51,7 +53,25 @@ const Header = () => {
 			{/* If logged in display logout link, else display sign-in options */}
 			<UserState>
 				{status.isLoggedIn ? (
-					<p>Log Out</p>
+					<ButtonAsLink
+						onClick={() => {
+							// remove the token
+							localStorage.removeItem("token");
+							//clear application's cache
+							client.resetStore();
+							//update local state
+							client.writeQuery({
+								query: IS_LOGGED_IN,
+								data: {
+									status: { isLoggedIn: false },
+								},
+							});
+							//redirect the user to the home page
+							history.push("/");
+						}}
+					>
+						Logout
+					</ButtonAsLink>
 				) : (
 					<p>
 						<Link to="/signup">Sign In</Link>
@@ -63,4 +83,4 @@ const Header = () => {
 	);
 };
 
-export default Header;
+export default withRouter(Header);
