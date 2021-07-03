@@ -50,4 +50,10 @@ const EDIT_NOTE = gql`
 	}
 `;
 
-export { SIGN_IN_USER, SIGNUP_USER, NEW_NOTE, EDIT_NOTE };
+const DELETE_NOTE = gql`
+	mutation deleteNote($id: ID!) {
+		deleteNote(id: $id)
+	}
+`;
+
+export { SIGN_IN_USER, SIGNUP_USER, NEW_NOTE, EDIT_NOTE, DELETE_NOTE };
