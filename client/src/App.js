@@ -8,6 +8,7 @@ import {
 import Pages from "./pages";
 import { setContext } from "apollo-link-context";
 import GlobalStyle from "./components/GlobalStyle";
+import { IS_LOGGED_IN } from "./gql/queries";
 
 // configure our API URI and cache
 const uri = process.env.REACT_APP_API_URI;
@@ -36,14 +37,6 @@ const client = new ApolloClient({
 const data = {
 	isLoggedIn: !!localStorage.getItem("token"),
 };
-
-const IS_LOGGED_IN = gql`
-	query WriteStatus {
-		status {
-			isLoggedIn
-		}
-	}
-`;
 
 // write the cache data on initial load
 client.writeQuery({
