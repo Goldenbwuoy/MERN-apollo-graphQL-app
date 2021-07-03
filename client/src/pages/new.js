@@ -1,7 +1,8 @@
 import { useMutation } from "@apollo/client";
 import React, { useEffect } from "react";
 import NoteForm from "../components/NoteForm";
-import { GET_NOTES, NEW_NOTE } from "../gql/queries";
+import { NEW_NOTE } from "../gql/mutations";
+import { GET_NOTES } from "../gql/queries";
 
 const NewNote = ({ history }) => {
 	useEffect(() => {

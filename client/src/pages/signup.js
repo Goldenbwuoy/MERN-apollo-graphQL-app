@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useMutation, useApolloClient } from "@apollo/client";
 
 import UserForm from "../components/UserForm";
-import { IS_LOGGED_IN, SIGNUP_USER } from "../gql/queries";
+import { IS_LOGGED_IN } from "../gql/queries";
+import { SIGNUP_USER } from "../gql/mutations";
 
 const SignUp = ({ history }) => {
 	//Apollo client
