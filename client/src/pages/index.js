@@ -10,6 +10,7 @@ import Layout from "../components/Layout";
 import SignUp from "./signup";
 import SignIn from "./signin";
 import NewNote from "./new";
+import EditNote from "./edit";
 
 const IS_LOGGED_IN = gql`
 	query ReadStatus {
@@ -28,6 +29,7 @@ const Pages = () => {
 				<PrivateRoute path="/mynotes" component={MyNotes} />
 				<PrivateRoute path="/favourites" component={Favourites} />
 				<PrivateRoute path="/new" component={NewNote} />
+				<PrivateRoute path="/edit/:id" component={EditNote} />
 				<Route path="/note/:id" component={NotePage} />
 				<Route path="/signup" component={SignUp} />
 				<Route path="/signin" component={SignIn} />

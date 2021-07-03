@@ -31,4 +31,23 @@ const NEW_NOTE = gql`
 	}
 `;
 
-export { SIGN_IN_USER, SIGNUP_USER, NEW_NOTE };
+const EDIT_NOTE = gql`
+	mutation updateNote($id: ID!, $content: String!) {
+		updateNote(id: $id, content: $content) {
+			id
+			content
+			createdAt
+			favouriteCount
+			favouriteBy {
+				id
+				username
+			}
+			author {
+				id
+				username
+			}
+		}
+	}
+`;
+
+export { SIGN_IN_USER, SIGNUP_USER, NEW_NOTE, EDIT_NOTE };
